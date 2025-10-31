@@ -20,20 +20,24 @@ if (isset($_POST['reset'])) {
     if (mysqli_num_rows($result) > 0) {
         $token = bin2hex(random_bytes(16));
         $update = "UPDATE users SET reset_token='$token' WHERE email='$email'";
-        
+
         if (mysqli_query($conn, $update)) {
-            $link = "http://localhost/USERMGMT/auth/reset_password.php?token=$token";
+            // Check if update was successful
+            if (mysqli_affected_rows($conn) > 0) {
+                $link = "http://localhost/USERMGMT/auth/reset_password.php?token=$token";
 
             // Kirim email menggunakan PHPMailer
             $mail = new PHPMailer(true);
             try {
                 $mail->isSMTP();
                 $mail->Host = SMTP_HOST;
-                $mail->SMTPAuth = true;
+                $mail->SMTPAuth = SMTP_AUTH;
                 $mail->Username = SMTP_USERNAME;
                 $mail->Password = SMTP_PASSWORD;
-                $mail->SMTPSecure = 'tls';
+                $mail->SMTPSecure = SMTP_ENCRYPTION;
                 $mail->Port = SMTP_PORT;
+                $mail->SMTPDebug = 0; // Disable debug output in production
+                $mail->SMTPKeepAlive = true; // Keep connection alive
 
                 $mail->setFrom(SMTP_FROM_EMAIL, SMTP_FROM_NAME);
                 $mail->addAddress($email);
@@ -50,10 +54,18 @@ if (isset($_POST['reset'])) {
                 ";
 
                 $mail->send();
+                $mail->smtpClose(); // Close SMTP connection
                 $message = "<span style='color:green;'>Link reset password telah dikirim ke email Anda.</span>";
             } catch (Exception $e) {
-                $message = "Gagal mengirim email. Error: {$mail->ErrorInfo}";
+                // Log error for debugging but don't show to user
+                error_log("PHPMailer Error: " . $mail->ErrorInfo);
+                $message = "Gagal mengirim email. Silakan coba lagi nanti atau hubungi administrator.";
             }
+            } else {
+                $message = "Gagal memperbarui token reset password.";
+            }
+        } else {
+            $message = "Gagal memperbarui database. Error: " . mysqli_error($conn);
         }
     } else {
         $message = "Email tidak terdaftar atau akun belum aktif.";

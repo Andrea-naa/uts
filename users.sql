@@ -34,6 +34,7 @@ CREATE TABLE `users` (
   `email` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
   `activation_token` varchar(32) DEFAULT NULL,
+  `reset_token` varchar(32) DEFAULT NULL,
   `role` varchar(50) NOT NULL DEFAULT 'Admin Gudang',
   `status` varchar(20) NOT NULL DEFAULT 'PENDING',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
