@@ -49,47 +49,292 @@ $user = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM users WHERE id=" .
 <head>
     <title>Profil Pengguna</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: Arial; background: #f5f5f5; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
         .header {
-            background: white; padding: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
-        .header h1 { color: #333; font-size: 24px; }
+
+        .header h1 {
+            color: #333;
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
         .logout-btn {
-            padding: 8px 16px; background: #f44336; color: white;
-            border: none; border-radius: 5px; cursor: pointer; text-decoration: none;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
         }
-        .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
+
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
         .nav-tabs {
-            background: white; padding: 15px; border-radius: 8px;
-            margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
+
         .nav-tabs a {
-            padding: 10px 20px; margin-right: 10px; text-decoration: none;
-            color: #333; border-radius: 5px; display: inline-block;
+            padding: 12px 25px;
+            margin-right: 15px;
+            text-decoration: none;
+            color: #666;
+            border-radius: 10px;
+            display: inline-block;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
-        .nav-tabs a.active { background: #2196F3; color: white; }
-        .content { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; margin-bottom: 5px; color: #555; font-weight: 500; }
+
+        .nav-tabs a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+
+        .nav-tabs a.active {
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .nav-tabs a.active::before {
+            left: 0;
+        }
+
+        .content {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .content h2 {
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 32px;
+            font-weight: 700;
+            text-align: center;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .content h3 {
+            color: #333;
+            margin: 40px 0 20px 0;
+            font-size: 24px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
         .form-group input {
-            width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e1e5e9;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(5px);
         }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            background: white;
+        }
+
         .btn {
-            padding: 12px 24px; background: #4CAF50; color: white;
-            border: none; border-radius: 5px; cursor: pointer; font-size: 16px;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            position: relative;
+            overflow: hidden;
         }
-        .btn:hover { background: #45a049; }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
         .message {
-            padding: 15px; background: #d4edda; color: #155724;
-            border: 1px solid #c3e6cb; border-radius: 5px; margin-bottom: 20px;
+            padding: 15px;
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            animation: fadeIn 0.3s ease-out;
         }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         .info-box {
-            background: #e3f2fd; padding: 20px; border-radius: 8px; margin-bottom: 30px;
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
-        .info-box p { margin: 8px 0; color: #0d47a1; }
-        hr { margin: 30px 0; border: none; border-top: 1px solid #ddd; }
+
+        .info-box p {
+            margin: 10px 0;
+            color: #0d47a1;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        hr {
+            margin: 40px 0;
+            border: none;
+            border-top: 2px solid #e1e5e9;
+            position: relative;
+        }
+
+        hr::after {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 2px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .nav-tabs a {
+                margin-bottom: 10px;
+                margin-right: 0;
+                width: 100%;
+                text-align: center;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .info-box {
+                padding: 20px;
+            }
+        }
     </style>
 </head>
 <body>
