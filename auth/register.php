@@ -62,9 +62,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $mail->SMTPKeepAlive = true;
                     
                     // Pengaturan email
-                    $mail->setFrom('lulumudhiah1905@gmail.com', 'Admin Gudang');
+                    $mail->setFrom('noeemeitin@gmail.com', 'Admin Gudang');
                     $mail->addAddress($email, $nama);
-                    $mail->addReplyTo('lulumudhiah1905@gmail.com', 'Admin Gudang');
+                    $mail->addReplyTo('noeemeitin@gmail.com', 'Admin Gudang');
                     
                     // Konten email
                     $mail->isHTML(true);
