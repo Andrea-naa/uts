@@ -24,7 +24,7 @@ if (isset($_POST['reset'])) {
         if (mysqli_query($conn, $update)) {
             // Check if update was successful
             if (mysqli_affected_rows($conn) > 0) {
-                $link = "http://localhost/USERMGMT/auth/reset_password.php?token=$token";
+                $link = "http://localhost/usermgmt/auth/reset_password.php?token=$token";
 
             // Kirim email menggunakan PHPMailer
             $mail = new PHPMailer(true);
