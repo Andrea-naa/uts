@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $mail->Host       = 'smtp.gmail.com';
                     $mail->SMTPAuth   = true;
                     $mail->Username   = 'noeemeitin@gmail.com';      // Email Gmail Anda
-                    $mail->Password   = 'klpu clvs lqfm kuqi';            // App Password Gmail (16 digit)
+                    $mail->Password   = 'nmaf lcvy xiax ayix';            // App Password Gmail (16 digit)
                     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
                     $mail->Port       = 587;
                     $mail->CharSet    = 'UTF-8';
@@ -62,9 +62,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $mail->SMTPKeepAlive = true;
                     
                     // Pengaturan email
-                    $mail->setFrom('dark91.me@gmail.com', 'Admin Gudang');
+                    $mail->setFrom('noeemeitin@gmail.com', 'Admin Gudang');
                     $mail->addAddress($email, $nama);
-                    $mail->addReplyTo('dark91.me@gmail.com', 'Admin Gudang');
+                    $mail->addReplyTo('noeemeitin@gmail.com', 'Admin Gudang');
                     
                     // Konten email
                     $mail->isHTML(true);
